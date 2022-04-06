@@ -29,6 +29,7 @@ namespace OdevKayit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(); 
             services.AddControllers();
             services.AddDbContext<odevlerContext>(options => options.UseMySQL(Configuration.GetConnectionString("OdevConnStr")));
         }
@@ -41,6 +42,9 @@ namespace OdevKayit
                 app.UseDeveloperExceptionPage();
                 // for vue
                 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+                //app.UseCors(
+                //    options => options.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader()
+                //);
             }
 
             app.UseHttpsRedirection();

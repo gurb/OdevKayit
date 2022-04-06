@@ -8,10 +8,14 @@ export default
     },
 
     methods: {
-        async getData() {   
+        async getData() {
+            const requestOptions = {
+                method: 'GET'
+            };   
             try {
-                let response = await fetch("https://localhost:44358/api/odev");
-                this.odevler = await response.json();
+                await fetch("https://localhost:44358/api/odev", requestOptions)
+                    .then(response => response.json())
+                    .then(json => this.odevler = json)
             } catch (err) {
                 console.log(err);
             }
@@ -26,11 +30,12 @@ export default
 
 <template>
     <div>
+        
         <h1>Ödevler</h1>
 
-        <ul v-for="odev in odevler" v-bind:key="od.id">
-            <li>{{ odev.Baslik }}</li>
-            <p>{{ odev.Icerik }}</p>
-        </ul>
+        <ol v-for="odev in odevler" v-bind:key="odev.id">
+            <li>{{ odev.baslik }}</li>
+            <p>{{ odev.icerik }}</p>
+        </OL>
     </div>
 </template>
