@@ -39,6 +39,8 @@ namespace OdevKayit
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // for vue
+                app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             }
 
             app.UseHttpsRedirection();
@@ -51,6 +53,13 @@ namespace OdevKayit
             {
                 endpoints.MapControllers();
             });
+
+            //app.UseSpa(builder => {
+            //    if (env.IsDevelopment())
+            //    {
+            //        builder.UseProxyToSpaDevelopmentServer("http://localhost:3000/");
+            //    }
+            //});
         }
     }
 }
