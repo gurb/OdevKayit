@@ -5,31 +5,66 @@ export default
 
     data() {
         return {
-            postResult: null
+            odevler : [],
+            postResult: null,
+            counter : 0,
         };
     },
 
     methods: {
-        async odevOlustur(){
-            const odevData = {
-                Baslik: this.$refs.odev_baslik,
-                Icerik: this.$refs.odev_icerik,
-                Baslangic: this.$refs.odev_baslangic,
-                Bitis: this.$refs.odev_bitis,
+        getData() {
+            const requestOptions = {
+                method: 'GET'
+            };   
+            try {
+                fetch("https://localhost:44358/api/odev", requestOptions)
+                    .then(response => response.json())
+                    .then(json => this.odevler = json)
+            } catch (err) {
+                console.log(err);
             }
+
+        },
+
+        async odevOlustur(){
+            this.counter = this.counter + 1;
+            console.log(this.counter);
+            const Odev = {
+                id: this.odevler.length + this.counter,
+                baslik: this.$refs.odev_baslik.value,
+                icerik: this.$refs.odev_icerik.value,
+                baslangic: this.$refs.odev_baslangic.value,
+                bitis: new Date(),
+            }
+            console.log(Odev);
             const requestOptions = {
                 method: 'POST',
-                Headers: {
+                headers: {
+                    // 'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin' : "*", 
+                    'Access-Control-Allow-Credentials' : true 
                 },
-                body: JSON.stringify( odevData ), 
+                mode: "cors",
+                body: JSON.stringify( Odev ), 
             };
-            fetch('https://localhost:44358/api/odev/', requestOptions)
-                .then(response => response.json())
+            await fetch('https://localhost:44358/api/odev/', requestOptions)
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error("HTTP status " + response.status);
+                    }
+                    console.log(response);
+                    return response.json();
+                })
                 .then(data => this.formData = data)
+                .catch((err) => {
+                    console.log(err);
+                });
         }
     },
-
+    created() {
+        this.getData();
+    },
 };
 </script>
 
@@ -37,9 +72,8 @@ export default
     <div>
         <h1>Ödev Ekle</h1>
 
-        <form @submit.prevent="odevOlustur">
+        <!-- <form @submit.prevent="odevOlustur">
             <div>
-                <label for="Baslik">Başlık Giriniz</label>
                 <input type="text" id="Baslik" ref="odev_baslik">
             </div>
             <div>
@@ -55,8 +89,29 @@ export default
                 <label for="Bitis">Bitiş Tarihi</label>
                 <input id="startDate" class="form-control" ref="odev_bitis"  type="datetime-local" />
             </div>
-            <button>Ekle</button>
+            <button type="submit">Ekle</button>
+        </form> -->
+
+        <form @submit.prevent="odevOlustur">
+            <div class="mb-3">
+                <label for="Baslik">Başlık Giriniz</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" ref="odev_baslik">
+            </div>
+            <div class="mb-3">
+                <label for="Icerik">İçerik Giriniz</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" ref="odev_icerik">
+            </div>
+            <div class="mb-3">
+                <label for="Baslangic">Başlangıç Tarihi</label>
+                <input id="startDate" class="form-control" ref="odev_baslangic"  type="datetime-local" />
+            </div>
+            <div class="mb-3">
+                <label for="Bitis">Bitiş Tarihi</label>
+                <input id="endDate" class="form-control" ref="odev_bitis"  type="datetime-local" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
     </div>
 </template>
+

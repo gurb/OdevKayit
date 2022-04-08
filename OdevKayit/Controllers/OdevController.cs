@@ -17,7 +17,6 @@ namespace OdevKayit.Controllers
         public OdevController(odevlerContext odevlerContext)
         {
             this.odevlerContext = odevlerContext;
-
         }
 
         //GET: api/<OdevController>
