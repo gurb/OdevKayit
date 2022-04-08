@@ -2,6 +2,8 @@
 import TheWelcome from './components/TheWelcome.vue'
 import Odev from './components/Odev.vue';
 import OdevEkle from './components/OdevEkle.vue';
+import Ogrenci from './components/Ogrenci.vue';
+import OgrenciKayit from './components/OgrenciKayit.vue';
 </script>
 
 <template>
@@ -22,15 +24,15 @@ import OdevEkle from './components/OdevEkle.vue';
               <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Öğrenciler</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-add-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Öğrenci Kayıt</button>
+              <button class="nav-link" id="pills-add-tab" data-bs-toggle="pill" data-bs-target="#pills-add" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Öğrenci Kayıt</button>
             </li>
           </ul>
 
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><Odev /></div>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"><OdevEkle /></div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-add-tab">...</div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"><Ogrenci /></div>
+            <div class="tab-pane fade" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab"><OgrenciKayit /></div>
         </div>
       </div>
     </div>

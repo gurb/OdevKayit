@@ -20,9 +20,26 @@ export default
                 console.log(err);
             }
         },
+        async odevSil(event, id){
+            const requestOptions = {
+                method: 'DELETE'
+            };   
+            try {
+                await fetch("https://localhost:44358/api/odev/" + id, requestOptions)
+                    .then(response => { response.json(); this.getData(); })
+                    // .then(json => this.odevler = json)
+            } catch (err) {
+                console.log(err);
+            }
+            
+        },
     },
 
     created() {
+        this.getData();
+    },
+    mounted()
+    {
         this.getData();
     },
 };
@@ -31,7 +48,7 @@ export default
 <template>
     <div>
         <h1>Ödevler</h1>
-        <table class="table">
+        <table class="table" ref="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -49,7 +66,7 @@ export default
                     <td>{{ odev.icerik }}</td>
                     <td>{{ odev.baslangic }}</td>
                     <td>{{ odev.bitis }}</td>
-                    <td><i class="bi bi-trash"></i></td>
+                    <td><button @click="odevSil($event, odev.id)"><i class="bi bi-trash"></i></button></td>
                 </tr>
             </tbody>
         </table>

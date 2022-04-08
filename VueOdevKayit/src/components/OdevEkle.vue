@@ -12,7 +12,7 @@ export default
     },
 
     methods: {
-        getData() {
+        async getData() {
             const requestOptions = {
                 method: 'GET'
             };   
@@ -23,14 +23,21 @@ export default
             } catch (err) {
                 console.log(err);
             }
-
         },
 
         async odevOlustur(){
+            this.getData();
             this.counter = this.counter + 1;
-            console.log(this.counter);
+            var index = 0;
+            if(this.odevler.length != 0){
+                var parse = this.odevler[this.odevler.length - 1];
+                index = parse.id;
+            }
+
+            // console.log(this.counter);
+            console.log(parse);
             const Odev = {
-                id: this.odevler.length + this.counter,
+                id: index + 1,
                 baslik: this.$refs.odev_baslik.value,
                 icerik: this.$refs.odev_icerik.value,
                 baslangic: this.$refs.odev_baslangic.value,
@@ -49,13 +56,7 @@ export default
                 body: JSON.stringify( Odev ), 
             };
             await fetch('https://localhost:44358/api/odev/', requestOptions)
-                .then(response => {
-                    if(!response.ok) {
-                        throw new Error("HTTP status " + response.status);
-                    }
-                    console.log(response);
-                    return response.json();
-                })
+                .then(response => { response.json(); this.getData(); })
                 .then(data => this.formData = data)
                 .catch((err) => {
                     console.log(err);
@@ -63,6 +64,10 @@ export default
         }
     },
     created() {
+        this.getData();
+    },
+    mounted()
+    {
         this.getData();
     },
 };
@@ -115,3 +120,9 @@ export default
     </div>
 </template>
 
+
+<style scoped>
+th{
+    font-weight: bold;
+}
+</style>
