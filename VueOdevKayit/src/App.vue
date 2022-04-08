@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from './components/TheWelcome.vue'
 import Odev from './components/Odev.vue';
 import OdevEkle from './components/OdevEkle.vue';
 import Ogrenci from './components/Ogrenci.vue';
 import OgrenciKayit from './components/OgrenciKayit.vue';
+
 </script>
 
 <template>

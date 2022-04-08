@@ -47,7 +47,7 @@ export default
 
 <template>
     <div>
-        <h1>Öğrenciler</h1>
+        <h3>Öğrenciler</h3>
         <table class="table" ref="table">
             <thead>
                 <tr>
@@ -64,7 +64,10 @@ export default
                     <td>{{ ogrenci.isim }}</td>
                     <td>{{ ogrenci.soyisim }}</td>
                     <!-- <td>{{ ogrenci.odevId }}</td> -->
-                    <td><button @click="ogrenciSil($event, ogrenci.id)"><i class="bi bi-trash"></i></button></td>
+                    <td>
+                        <button class="action-button"><i class="bi bi-pencil"></i></button>
+                        <button class="action-button" @click="ogrenciSil($event, ogrenci.id)"><i class="bi bi-trash"></i></button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -75,5 +78,8 @@ export default
 <style scoped>
 th{
     font-weight: bold;
+}
+.action-button {
+    margin-right: 5px;
 }
 </style>

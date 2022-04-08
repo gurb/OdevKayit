@@ -74,7 +74,7 @@ export default
 
 <template>
     <div>
-        <h1>Öğrenci Kayıt</h1>
+        <h3>Öğrenci Kayıt</h3>
 
         <!-- <form @submit.prevent="odevOlustur">
             <div>

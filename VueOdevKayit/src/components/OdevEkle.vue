@@ -75,7 +75,7 @@ export default
 
 <template>
     <div>
-        <h1>Ödev Ekle</h1>
+        <h3>Ödev Ekle</h3>
 
         <!-- <form @submit.prevent="odevOlustur">
             <div>
