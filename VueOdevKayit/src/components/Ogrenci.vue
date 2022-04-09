@@ -1,6 +1,12 @@
 <script>
+import GET from "./FetchLib.vue";
+import POST from "./FetchLib.vue";
+import DELETE from "./FetchLib.vue";
+
 export default
 {
+    mixins: [GET, POST, DELETE],
+
     data() {
         return {
             ogrenciler : [],
@@ -8,39 +14,19 @@ export default
     },
 
     methods: {
-        async getData() {
-            const requestOptions = {
-                method: 'GET'
-            };   
-            try {
-                await fetch("https://localhost:44358/api/ogrenci", requestOptions)
-                    .then(response => response.json())
-                    .then(json => this.ogrenciler = json)
-            } catch (err) {
-                console.log(err);
-            }
-        },
         async ogrenciSil(event, id){
-            const requestOptions = {
-                method: 'DELETE'
-            };   
-            try {
-                await fetch("https://localhost:44358/api/ogrenci/" + id, requestOptions)
-                    .then(response => { response.json(); this.getData(); })
-                    // .then(json => this.odevler = json)
-            } catch (err) {
-                console.log(err);
-            }
-            
+            this.ogrenciler = await this.DELETE("https://localhost:44358/api/ogrenci/", id, this.ogrenciler);
+            this.ogrenciler = await Promise.resolve(this.ogrenciler);
         },
     },
 
-    created() {
-        this.getData();
+    async created() {
+        this.ogrenciler = this.GET("https://localhost:44358/api/ogrenci", this.ogrenciler);
+        this.ogrenciler = await Promise.resolve(this.ogrenciler);
     },
-    mounted()
-    {
-        this.getData();
+    async mounted(){
+        this.ogrenciler = this.GET("https://localhost:44358/api/ogrenci", this.ogrenciler);
+        this.ogrenciler = await Promise.resolve(this.ogrenciler);
     },
 };
 </script>

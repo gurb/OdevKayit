@@ -1,7 +1,11 @@
 <script>
+import GET from "./FetchLib.vue";
+import POST from "./FetchLib.vue";
+
 export default
 {
     name: "OdevOlustur",
+    mixins: [GET, POST],
 
     data() {
         return {
@@ -12,21 +16,11 @@ export default
     },
 
     methods: {
-        async getData() {
-            const requestOptions = {
-                method: 'GET'
-            };   
-            try {
-                fetch("https://localhost:44358/api/odev", requestOptions)
-                    .then(response => response.json())
-                    .then(json => this.odevler = json)
-            } catch (err) {
-                console.log(err);
-            }
-        },
 
         async odevOlustur(){
-            this.getData();
+            this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+            this.odevler = await Promise.resolve(this.odevler);
+
             this.counter = this.counter + 1;
             var index = 0;
             if(this.odevler.length != 0){
@@ -43,32 +37,21 @@ export default
                 baslangic: this.$refs.odev_baslangic.value,
                 bitis: new Date(),
             }
+            
             console.log(Odev);
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    // 'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin' : "*", 
-                    'Access-Control-Allow-Credentials' : true 
-                },
-                mode: "cors",
-                body: JSON.stringify( Odev ), 
-            };
-            await fetch('https://localhost:44358/api/odev/', requestOptions)
-                .then(response => { response.json(); this.getData(); })
-                .then(data => this.formData = data)
-                .catch((err) => {
-                    console.log(err);
-                });
+
+            await this.POST('https://localhost:44358/api/odev/', Odev);
+
         }
     },
-    created() {
-        this.getData();
+    async created() {
+        this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        this.odevler = await Promise.resolve(this.odevler);
     },
-    mounted()
+    async mounted()
     {
-        this.getData();
+        this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        this.odevler = await Promise.resolve(this.odevler);
     },
 };
 </script>
@@ -100,11 +83,11 @@ export default
         <form @submit.prevent="odevOlustur">
             <div class="mb-3">
                 <label for="Baslik">Başlık Giriniz</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" ref="odev_baslik">
+                <input type="text" class="form-control" ref="odev_baslik">
             </div>
             <div class="mb-3">
                 <label for="Icerik">İçerik Giriniz</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" ref="odev_icerik">
+                <input type="text" class="form-control" ref="odev_icerik">
             </div>
             <div class="mb-3">
                 <label for="Baslangic">Başlangıç Tarihi</label>

@@ -1,34 +1,30 @@
 <script>
+
+import GET from "./FetchLib.vue";
+import POST from "./FetchLib.vue";
+import GETID from "./FetchLib.vue";
+
 export default
 {
     name: "OgrenciKayit",
-
+    mixins: [GET, POST, GETID],
     data() {
         return {
             ogrenciler : [],
             postResult: null,
             counter : 0,
+            odevler : [],
         };
     },
 
     methods: {
-        async getData() {
-            const requestOptions = {
-                method: 'GET'
-            };   
-            try {
-                fetch("https://localhost:44358/api/ogrenci", requestOptions)
-                    .then(response => response.json())
-                    .then(json => this.ogrenciler = json)
-            } catch (err) {
-                console.log(err);
-            }
-        },
+        async ogrenciOlustur(){    
+            this.ogrenciler = this.GET("https://localhost:44358/api/ogrenci", this.ogrenciler);
+            this.ogrenciler = await Promise.resolve(this.ogrenciler);
 
-        async ogrenciOlustur(){
-            this.getData();
             this.counter = this.counter + 1;
             var index = 0;
+
             if(this.ogrenciler.length != 0){
                 var parse = this.ogrenciler[this.ogrenciler.length - 1];
                 index = parse.id;
@@ -41,10 +37,19 @@ export default
                 isim: this.$refs.ogrenci_isim.value,
                 soyisim: this.$refs.ogrenci_soyisim.value,
                 odevid: parseInt(this.$refs.ogrenci_odev.value),
+                odev: null,
             }
+
+            Ogrenci.odev = this.GETID("https://localhost:44358/api/odev/", this.ogrenciler, Ogrenci.odevid);
+           
             console.log(Ogrenci);
+           
+            this.POST('https://localhost:44358/api/ogrenci/', Ogrenci);
+        },
+
+        async odevAta(){
             const requestOptions = {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     // 'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -54,20 +59,22 @@ export default
                 mode: "cors",
                 body: JSON.stringify( Ogrenci ), 
             };
-            await fetch('https://localhost:44358/api/ogrenci/', requestOptions)
-                .then(response => { response.json(); this.getData(); })
-                .then(data => this.formData = data)
-                .catch((err) => {
-                    console.log(err);
-                });
         }
     },
-    created() {
-        this.getData();
+    async created() {
+        this.ogrenciler = this.GET("https://localhost:44358/api/ogrenci", this.ogrenciler);
+        this.ogrenciler = await Promise.resolve(this.ogrenciler);
+
+        this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        this.odevler = await Promise.resolve(this.odevler);
     },
-    mounted()
+    async mounted()
     {
-        this.getData();
+        this.ogrenciler = this.GET("https://localhost:44358/api/ogrenci", this.ogrenciler);
+        this.ogrenciler = await Promise.resolve(this.ogrenciler);
+
+        this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        this.odevler = await Promise.resolve(this.odevler);
     },
 };
 </script>
@@ -107,7 +114,12 @@ export default
             </div>
             <div class="mb-3">
                 <label for="Odev">Odev Ata</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" ref="ogrenci_odev">
+                <select class="form-select" aria-label="Default select example" ref="ogrenci_odev" v-model="odev">
+                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option v-for="odev in odevler" :value="odev.id" >
+                        {{ odev.baslik }}
+                    </option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Kaydet</button>
         </form>

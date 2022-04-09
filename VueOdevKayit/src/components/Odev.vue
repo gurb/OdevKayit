@@ -1,6 +1,8 @@
 <script>
 import {ref} from "vue";
 import Modal from './Modal.vue';
+import GET from "./FetchLib.vue";
+import DELETE from "./FetchLib.vue";
 
 export default
 {
@@ -12,52 +14,36 @@ export default
         return { isOpen }
     },
     // -- end for modal
+    mixins: [GET, DELETE],
 
     data() {
         return {
             id : 0,
             odevler: [],
-            seciliOdev: null
+            seciliOdev: null,
+            ogrenciler: [],
         };
     },
     methods: {
-        async getData() {
-            const requestOptions = {
-                method: "GET"
-            };
-            try {
-                await fetch("https://localhost:44358/api/odev", requestOptions)
-                    .then(response => response.json())
-                    .then(json => this.odevler = json);
-            }
-            catch (err) {
-                console.log(err);
-            }
-        },
         async odevSil(event, id) {
-            const requestOptions = {
-                method: "DELETE"
-            };
-            try {
-                await fetch("https://localhost:44358/api/odev/" + id, requestOptions)
-                    .then(response => { response.json(); this.getData(); });
-                // .then(json => this.odevler = json)
-            }
-            catch (err) {
-                console.log(err);
-            }
+            this.odevler = await this.DELETE("https://localhost:44358/api/odev/", id, this.odevler);
+            this.odevler = await Promise.resolve(this.odevler);
         },
-        detayAc(event, odev)
+        async detayAc(event, odev)
         {
             isOpen = true;
             seciliOdev = odev;
         }
     },
-    created() {
-        this.getData();
+    async created() {
+        this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        this.odevler = await Promise.resolve(this.odevler);
+        
+        console.log(this.odevler);
     },
-    mounted() {
-        this.getData();
+    async mounted() {
+        this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        console.log(this.odevler);
     },
     components: { Modal }
 };
@@ -97,14 +83,18 @@ export default
     <!-- <button @click="isOpen = true">show modal</button> -->
     <Modal :open="isOpen" @close="isOpen = !isOpen">
         <div v-if="seciliOdev"> 
-            <h4> {{ seciliOdev.baslik }}</h4>
+            <h5> {{ seciliOdev.baslik }}</h5>
             <div class="date-area">
                 <b>Başlangıç Tarihi:</b> {{ seciliOdev.baslangic }}
                 <br/>
                 <b>Bitiş Tarihi:</b> {{ seciliOdev.bitis }}
             </div>
-            <h5>İçerik: </h5>
+            <h6>İçerik: </h6>
             <p class="odev-icerigi">{{ seciliOdev.icerik }}</p>
+            <h6>Öğrenciler</h6>
+            <ul v-for="ogrenci in ogrenciler" v-bind:key="ogrenci.id">
+                <li> {{ ogrenci.isim, ogrenci.soyisim}} </li>
+            </ul>
         </div>
     </Modal>
     <!-- for modal -->
