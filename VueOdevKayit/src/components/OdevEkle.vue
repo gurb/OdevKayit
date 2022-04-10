@@ -35,7 +35,7 @@ export default
                 baslik: this.$refs.odev_baslik.value,
                 icerik: this.$refs.odev_icerik.value,
                 baslangic: this.$refs.odev_baslangic.value,
-                bitis: new Date(),
+                bitis: this.$refs.odev_bitis.value,
             }
             
             console.log(Odev);

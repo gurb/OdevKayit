@@ -34,6 +34,7 @@ namespace OdevKayit.Controllers
         }
 
         // sadece o ödeve atanmış öğrencileri listele
+        // GET api/<OgrenciController>/listele/5
         [HttpGet("listele/{odevid}")]
         public IEnumerable<Ogrenci> OgrenciList(int odevid)
         {
@@ -59,8 +60,6 @@ namespace OdevKayit.Controllers
                 odevlerContext.SaveChanges();
             }
         }
-
-
 
         // DELETE api/<OgrenciController>/5
         [HttpDelete("{id}")]

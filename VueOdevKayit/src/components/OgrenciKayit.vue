@@ -121,9 +121,9 @@ export default
                 <input type="text" class="form-control"  ref="ogrenci_soyisim">
             </div>
             <div class="mb-3">
-                <label for="Odev">Odev Ata</label>
+                <label for="Odev">Ödev Ata</label>
                 <select class="form-select" aria-label="Default select example" ref="ogrenci_odev" v-model="odev">
-                    <option :value="null" disabled>-- Please select an option --</option>
+                    <option :value="null" disabled>-- Aşağıdaki ödevlerden birini seçiniz --</option>
                     <option v-for="odev in odevler" :value="odev.id" >
                         {{ odev.baslik }}
                     </option>

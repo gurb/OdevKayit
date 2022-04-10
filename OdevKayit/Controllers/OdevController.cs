@@ -66,7 +66,7 @@ namespace OdevKayit.Controllers
             }
         }
 
-        // Created and used this method in Delete method because of "Cannot delete or update a parent row: a foreign key constraint fails"
+        // "Cannot delete or update a parent row: a foreign key constraint fails" hatası nedeniyle bu metod oluşturuldu ve Delete içinde kullanıldı.
         private void checkDelete(int id)
         {
             foreach(var ogrenci in odevlerContext.Ogrenci) 
