@@ -1,3 +1,6 @@
+Çalışma demosu:
+https://youtu.be/yGni5Tq3b6k
+
 SQL query:
 ```sql
 CREATE TABLE Ogrenci(
