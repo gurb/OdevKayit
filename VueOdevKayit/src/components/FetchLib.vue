@@ -76,7 +76,7 @@ export default {
             return this.GET(apiPath, data);
         },
 
-        async PUT(apiPath, id, data) {
+        async PUT(apiPath, data, id) {
             const requestOptions = {
                 method: 'PUT',
                 headers: {

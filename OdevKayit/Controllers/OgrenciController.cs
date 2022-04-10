@@ -33,6 +33,13 @@ namespace OdevKayit.Controllers
             return odevlerContext.Ogrenci.FirstOrDefault(o => o.Id == id);
         }
 
+        // sadece o ödeve atanmış öğrencileri listele
+        [HttpGet("listele/{odevid}")]
+        public IEnumerable<Ogrenci> OgrenciList(int odevid)
+        {
+            return odevlerContext.Ogrenci.Where(o => o.OdevId == odevid);
+        }
+
         // POST api/<OgrenciController>
         [HttpPost]
         public void Post([FromBody] Ogrenci value)
@@ -52,6 +59,8 @@ namespace OdevKayit.Controllers
                 odevlerContext.SaveChanges();
             }
         }
+
+
 
         // DELETE api/<OgrenciController>/5
         [HttpDelete("{id}")]

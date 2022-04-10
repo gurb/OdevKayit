@@ -3,11 +3,12 @@
 import GET from "./FetchLib.vue";
 import POST from "./FetchLib.vue";
 import GETID from "./FetchLib.vue";
+import PUT from "./FetchLib.vue";
 
 export default
 {
     name: "OgrenciKayit",
-    mixins: [GET, POST, GETID],
+    mixins: [GET, POST, GETID, PUT],
     data() {
         return {
             ogrenciler : [],
@@ -37,10 +38,17 @@ export default
                 isim: this.$refs.ogrenci_isim.value,
                 soyisim: this.$refs.ogrenci_soyisim.value,
                 odevid: parseInt(this.$refs.ogrenci_odev.value),
-                odev: null,
             }
 
-            Ogrenci.odev = this.GETID("https://localhost:44358/api/odev/", this.ogrenciler, Ogrenci.odevid);
+        
+            // var odev;
+            // odev = await this.GETID("https://localhost:44358/api/odev/", odev, Ogrenci.odevid);
+            // if(odev != null)
+            // {
+            //     odev.ogrenci.push(Ogrenci);
+            // }
+            // this.PUT("https://localhost:44358/api/odev/", odev, Ogrenci.odevid);
+            // console.log(odev);
            
             console.log(Ogrenci);
            

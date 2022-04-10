@@ -60,26 +60,6 @@ export default
     <div>
         <h3>Ödev Ekle</h3>
 
-        <!-- <form @submit.prevent="odevOlustur">
-            <div>
-                <input type="text" id="Baslik" ref="odev_baslik">
-            </div>
-            <div>
-                <label for="Icerik">İçerik Giriniz</label>
-                <input type="text" id="Icerik" ref="odev_icerik">
-            </div>
-            <div>
-                <label for="Baslangic">Başlangıç Tarihi</label>
-                <input id="startDate" class="form-control" ref="odev_baslangic"  type="datetime-local" />
-
-            </div>
-            <div>
-                <label for="Bitis">Bitiş Tarihi</label>
-                <input id="startDate" class="form-control" ref="odev_bitis"  type="datetime-local" />
-            </div>
-            <button type="submit">Ekle</button>
-        </form> -->
-
         <form @submit.prevent="odevOlustur">
             <div class="mb-3">
                 <label for="Baslik">Başlık Giriniz</label>
@@ -97,7 +77,7 @@ export default
                 <label for="Bitis">Bitiş Tarihi</label>
                 <input id="endDate" class="form-control" ref="odev_bitis"  type="datetime-local" />
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Ekle</button>
         </form>
 
     </div>

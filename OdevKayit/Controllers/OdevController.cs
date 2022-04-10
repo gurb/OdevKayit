@@ -60,8 +60,19 @@ namespace OdevKayit.Controllers
             Odev odev = odevlerContext.Odev.FirstOrDefault(o => o.Id == id);
             if (odev != null)
             {
+                checkDelete(id);
                 odevlerContext.Odev.Remove(odev);
                 odevlerContext.SaveChanges();
+            }
+        }
+
+        // Created and used this method in Delete method because of "Cannot delete or update a parent row: a foreign key constraint fails"
+        private void checkDelete(int id)
+        {
+            foreach(var ogrenci in odevlerContext.Ogrenci) 
+            {
+                if (ogrenci.OdevId == id)
+                    ogrenci.OdevId = null;
             }
         }
     }

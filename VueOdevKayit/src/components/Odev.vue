@@ -3,6 +3,9 @@ import {ref} from "vue";
 import Modal from './Modal.vue';
 import GET from "./FetchLib.vue";
 import DELETE from "./FetchLib.vue";
+import PUT from "./FetchLib.vue";
+import { checkCompatEnabled } from "@vue/compiler-core";
+import { isProxy, toRaw } from 'vue';
 
 export default
 {
@@ -14,7 +17,8 @@ export default
         return { isOpen }
     },
     // -- end for modal
-    mixins: [GET, DELETE],
+
+    mixins: [GET, DELETE, PUT],
 
     data() {
         return {
@@ -22,27 +26,52 @@ export default
             odevler: [],
             seciliOdev: null,
             ogrenciler: [],
+            seciliOgrenciler: [],
         };
     },
     methods: {
         async odevSil(event, id) {
+            this.getOgrenci();
             this.odevler = await this.DELETE("https://localhost:44358/api/odev/", id, this.odevler);
             this.odevler = await Promise.resolve(this.odevler);
+        },
+        async ogrenciSil(event, id){
+            this.ogrenciler = await this.DELETE("https://localhost:44358/api/ogrenci/", id, this.ogrenciler);
+            this.ogrenciler = await Promise.resolve(this.ogrenciler);
         },
         async detayAc(event, odev)
         {
             isOpen = true;
             seciliOdev = odev;
+            this.getOgrenci();
+        },
+        async getOdev()
+        {
+            this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+            this.odevler = await Promise.resolve(this.odevler);
+        },
+        async getOgrenci()
+        {
+            this.ogrenciler = this.GET("https://localhost:44358/api/ogrenci/", this.ogrenciler);
+            this.ogrenciler = await Promise.resolve(this.ogrenciler);
+        },
+        /** belli ödeve ait olan öğrenci listesi */
+        async ogrenciListe(odevid)
+        {
+            this.seciliOgrenciler = this.GET("https://localhost:44358/api/ogrenci/listele/" + odevid, this.seciliOgrenciler);
+            this.seciliOgrenciler = await Promise.resolve(this.seciliOgrenciler);
         }
     },
     async created() {
         this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
         this.odevler = await Promise.resolve(this.odevler);
-        
+        this.getOgrenci();
         console.log(this.odevler);
     },
     async mounted() {
         this.odevler = this.GET("https://localhost:44358/api/odev", this.odevler);
+        this.getOgrenci();
+
         console.log(this.odevler);
     },
     components: { Modal }
@@ -67,7 +96,7 @@ export default
                 <tr v-for="odev in odevler" v-bind:key="odev.id"> 
                     <th scope="row">{{ odev.id }}</th>
                     <td>
-                        <a class="odev-link" @click="isOpen = true, seciliOdev = odev"> {{ odev.baslik }} </a>
+                        <a class="odev-link" @click="isOpen = true, seciliOdev = odev, ogrenciListe(odev.id)"> {{ odev.baslik }} </a>
                     </td>
                     <td>{{ odev.icerik }}</td>
                     <td>{{ odev.baslangic }}</td>
@@ -92,14 +121,13 @@ export default
             <h6>İçerik: </h6>
             <p class="odev-icerigi">{{ seciliOdev.icerik }}</p>
             <h6>Öğrenciler</h6>
-            <ul v-for="ogrenci in ogrenciler" v-bind:key="ogrenci.id">
-                <li> {{ ogrenci.isim, ogrenci.soyisim}} </li>
+            <ul v-for="secili in seciliOgrenciler" v-bind:key="secili.id">
+                <li> {{ secili.isim }} </li>
             </ul>
         </div>
     </Modal>
     <!-- for modal -->
 </template>
-
 
 <style scoped>
 th{
